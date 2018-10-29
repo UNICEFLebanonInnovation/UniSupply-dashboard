@@ -21,39 +21,25 @@ def import_form_data(
         url='http://unisyncgtwy.westeurope.cloudapp.azure.com:4984/leb-winter-prd',
         username='',
         password='',
-        collection='submissions'
+        collection='winter_submissions'
 ):
     """Initialize the database."""
     click.echo('Staring import from Kobo...')
 
-    user_docs = {}
-    user_docs.append(
-        {
-            "_id": username,
-            "type": "user",
-            "username": username,
-            "password": password,
-            "organisation": username,
-        }
-    )
+    url = path.join(url, '_all_docs?include_docs=true')
+    print(url)
 
-    payload_json = json.dumps(
-        {
-            'docs': user_docs,
-            'all_or_nothing': True
-        }
-    )
-    url = path.join(url, '_bulk_docs')
-    data = requests.post(
+    data = requests.get(
         url,
-        headers={'content-type': 'application/json'},
-        auth=HTTPBasicAuth(username, password),
-        data=payload_json,
-    )
+        auth=HTTPBasicAuth(username, password)
+    ).json()
+
+    data = data['rows']
 
     db.connection.get_default_database()[collection].drop()
-    db.connection.get_default_database()[collection].insert_many(data.json())
-    click.echo('{} submissions imported from Kobo'.format(len(data.json())))
+    db.connection.get_default_database()[collection].insert_many(data)
+    # db.connection.get_default_database()[collection].insert_one(data)
+    click.echo('{} submissions imported from Kobo'.format(len(data)))
 
 
 # @app.cli.command()
@@ -70,7 +56,7 @@ def import_form_data(
 
 @app.cli.command()
 def run_aggregation(
-        collection='submissions',
+        collection='winter_submissions',
         file_name='distributions'
 ):
     click.echo(db.connection.get_default_database().command(

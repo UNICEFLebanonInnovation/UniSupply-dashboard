@@ -18,6 +18,15 @@ $ pip install -r requirements.txt
 ```
 $ export FLASK_APP=tasks.py
 $ import_form_data KOBO_ID KOBO_USERNAME KOBO_PASSWORD
+Run on terminal: mongod
+Run on another terminal:
+export FLASK_APP=tasks.py
+python -m flask run
+flask import_form_data 108163 unicef_leb PRIME2017
+flask convert_to_integer
+flask run_aggregation
+
+https://docs.mongodb.com/manual/reference/operator/aggregation/add/
 ```
 
 ## Running the tests
