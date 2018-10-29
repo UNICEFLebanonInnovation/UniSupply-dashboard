@@ -432,5 +432,5 @@
   {
       "$project": {"_id": 0}
   },
-  {"$out": "sites"}
+  {"$out": "submissions"}
 ]

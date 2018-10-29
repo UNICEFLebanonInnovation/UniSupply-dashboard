@@ -39,59 +39,69 @@ db.init_app(app)
 #     household_data = DictField(db_field='Metadata_section/household_data')
 
 
-class SiteDetailsMixin(object):
-    p_code_internal_code = StringField(db_field='p_code')
+class SubmissionDetailsMixin(object):
+    _id = StringField()
+    p_code = StringField()
     p_code_name = StringField()
-    date = StringField()
-    visit = StringField()
+    cadastral = StringField()
+    district = StringField()
     governorate = StringField()
-    partner = StringField()
-    by = StringField(db_field='org')
+    longitude = StringField()
+    latitude = StringField()
+    site_type = StringField(db_field='site-type')
+    type = StringField()
 
-    individuals = IntField(db_field='indivisuals')
-    total_tents = IntField()
-    min_sample_tents = IntField(db_field='sample_tents_min')
-    actual_tents_sampled = IntField(db_field='sample_tents')
+    # p_code_name = StringField()
+    # date = StringField()
+    # visit = StringField()
+    # governorate = StringField()
+    # partner = StringField()
+    # by = StringField(db_field='org')
+    #
+    # individuals = IntField(db_field='indivisuals')
+    # total_tents = IntField()
+    # min_sample_tents = IntField(db_field='sample_tents_min')
+    # actual_tents_sampled = IntField(db_field='sample_tents')
+    #
+    # free_of_open_defecation = StringField(db_field='Free of Open Defecation')
+    # clean_environment = StringField(db_field='Clean Environment')
+    # no_solid_waste = StringField(db_field='No Waste')
+    #
+    # safe_water = DecimalField(db_field='Safe Water')
+    # hands_washed = DecimalField(db_field='Hands Washed')
+    # clean_latrines = DecimalField(db_field='Clean Latrines')
+    # locked_latrines = DecimalField(db_field='Locked Latrines')
+    # lighted_latrines = DecimalField(db_field='Lighted Latrines')
+    # disease_prevention = DecimalField(db_field='Disease Prevention')
+    # diseases = ListField(StringField(), db_field='Diseases')
+    #
+    # household_score = DecimalField(db_field='Household Score')
+    # site_score = DecimalField(db_field='Submission Score')
+    # total_score = DecimalField(db_field='Total Score')
+    #
+    # gbv_number = IntField(db_field='GBV_total')
+    # gbv_number_female = IntField(db_field='GBV_total_female')
+    # gbv_number_male = IntField(db_field='GBV_total_male')
+    # gbv_number_female_negative = IntField(db_field='GBV_total_female_negative')
+    # gbv_number_male_negative = IntField(db_field='GBV_total_male_negative')
+    # gbv_score_percentage = IntField(db_field='GBV')
+    # gbv_score_percentage_female = IntField(db_field='GBV_female')
+    # gbv_score_percentage_male = IntField(db_field='GBV_male')
+    #
+    # report = StringField(db_field='Report on AI')
 
-    free_of_open_defecation = StringField(db_field='Free of Open Defecation')
-    clean_environment = StringField(db_field='Clean Environment')
-    no_solid_waste = StringField(db_field='No Waste')
 
-    safe_water = DecimalField(db_field='Safe Water')
-    hands_washed = DecimalField(db_field='Hands Washed')
-    clean_latrines = DecimalField(db_field='Clean Latrines')
-    locked_latrines = DecimalField(db_field='Locked Latrines')
-    lighted_latrines = DecimalField(db_field='Lighted Latrines')
-    disease_prevention = DecimalField(db_field='Disease Prevention')
-    diseases = ListField(StringField(), db_field='Diseases')
-
-    household_score = DecimalField(db_field='Household Score')
-    site_score = DecimalField(db_field='Site Score')
-    total_score = DecimalField(db_field='Total Score')
-
-    gbv_number = IntField(db_field='GBV_total')
-    gbv_number_female = IntField(db_field='GBV_total_female')
-    gbv_number_male = IntField(db_field='GBV_total_male')
-    gbv_number_female_negative = IntField(db_field='GBV_total_female_negative')
-    gbv_number_male_negative = IntField(db_field='GBV_total_male_negative')
-    gbv_score_percentage = IntField(db_field='GBV')
-    gbv_score_percentage_female = IntField(db_field='GBV_female')
-    gbv_score_percentage_male = IntField(db_field='GBV_male')
-
-    report = StringField(db_field='Report on AI')
-
-
-class Visits(SiteDetailsMixin, DynamicEmbeddedDocument):
+class Visits(SubmissionDetailsMixin, DynamicEmbeddedDocument):
     pass
 
 
-class Sites(SiteDetailsMixin, DynamicDocument):
+class Submissions(SubmissionDetailsMixin, DynamicDocument):
 
     visits = ListField(EmbeddedDocumentField(Visits))
 
 
 # Customized admin views
-class SiteView(ModelView):
+class SubmissionView(ModelView):
     can_create = False
     can_delete = False
     can_export = True
@@ -100,136 +110,125 @@ class SiteView(ModelView):
     page_size = 50
 
     column_list = (
-        'p_code_internal_code',
-        'p_code_name',
-        'date',
-        'visit',
-        'by',
-        'partner',
-        'governorate',
-        'total_tents',
-        'individuals',
-        'min_sample_tents',
-        'free_of_open_defecation',
-        'clean_environment',
-        'no_solid_waste',
-        'site_score',
-        'safe_water',
-        'hands_washed',
-        'clean_latrines',
-        'locked_latrines',
-        'lighted_latrines',
-        'diseases',
-        'disease_prevention',
-        'household_score',
-        'total_score',
-        'gbv_number',
-        'gbv_number_female',
-        'gbv_number_male',
-        'gbv_number_female_negative',
-        'gbv_number_male_negative',
-        'gbv_score_percentage',
-        'gbv_score_percentage_female',
-        'gbv_score_percentage_male',
-        'report',
+        # 'p_code_internal_code',
+        # 'p_code_name',
+        # 'date',
+        # 'visit',
+        # 'by',
+        # 'partner',
+        # 'governorate',
+        # 'total_tents',
+        # 'individuals',
+        # 'min_sample_tents',
+        # 'free_of_open_defecation',
+        # 'clean_environment',
+        # 'no_solid_waste',
+        # 'site_score',
+        # 'safe_water',
+        # 'hands_washed',
+        # 'clean_latrines',
+        # 'locked_latrines',
+        # 'lighted_latrines',
+        # 'diseases',
+        # 'disease_prevention',
+        # 'household_score',
+        # 'total_score',
+        # 'gbv_number',
+        # 'gbv_number_female',
+        # 'gbv_number_male',
+        # 'gbv_number_female_negative',
+        # 'gbv_number_male_negative',
+        # 'gbv_score_percentage',
+        # 'gbv_score_percentage_female',
+        # 'gbv_score_percentage_male',
+        # 'report',
     )
 
-    column_filters = (
-        'p_code_internal_code',
-        'p_code_name',
-        'visit',
-        'by',
-        'total_tents',
-        'individuals',
-        'min_sample_tents',
-        'free_of_open_defecation',
-        'clean_environment',
-        'no_solid_waste',
-        'safe_water',
-        'hands_washed',
-        'clean_latrines',
-        'locked_latrines',
-        'lighted_latrines',
-        'disease_prevention',
-        'site_score',
-        'household_score',
-        'total_score',
-        'gbv_number',
-        'gbv_number_female',
-        'gbv_number_male',
-        'gbv_number_female_negative',
-        'gbv_number_male_negative',
-        'gbv_score_percentage',
-        'gbv_score_percentage_female',
-        'gbv_score_percentage_male',
-        'report',
-        # FilterEqual(
-        #     column=Sites.partner,
-        #     name='Partner',
-        #     options=[(partner,partner) for partner in Sites.objects.distinct('partner')]
-        # ),
-        # FilterEqual(
-        #     column=Sites.governorate,
-        #     name='Governorate',
-        #     options=[(governorate, governorate) for governorate in Sites.objects.distinct('governorate')]
-        # ),
-    )
+    # column_filters = (
+    #     'p_code_internal_code',
+    #     'p_code_name',
+    #     'visit',
+    #     'by',
+    #     'total_tents',
+    #     'individuals',
+    #     'min_sample_tents',
+    #     'free_of_open_defecation',
+    #     'clean_environment',
+    #     'no_solid_waste',
+    #     'safe_water',
+    #     'hands_washed',
+    #     'clean_latrines',
+    #     'locked_latrines',
+    #     'lighted_latrines',
+    #     'disease_prevention',
+    #     'site_score',
+    #     'household_score',
+    #     'total_score',
+    #     'gbv_number',
+    #     'gbv_number_female',
+    #     'gbv_number_male',
+    #     'gbv_number_female_negative',
+    #     'gbv_number_male_negative',
+    #     'gbv_score_percentage',
+    #     'gbv_score_percentage_female',
+    #     'gbv_score_percentage_male',
+    #     'report',
 
-    column_searchable_list = (
-        'p_code_internal_code',
-        'p_code_name',
-        'date',
-        'visit',
-        'by',
-        'partner',
-        'governorate',
-    )
+    # column_searchable_list = (
+    #     'p_code_internal_code',
+    #     'p_code_name',
+    #     'date',
+    #     'visit',
+    #     'by',
+    #     'partner',
+    #     'governorate',
+    # )
 
-    form_subdocuments = {
-        'visits': {
-            'form_subdocuments': {
-                None: {
-                    # Add <hr> at the end of the form
-                    'form_columns': (
-                        'date',
-                        'visit',
-                        'partner',
-                        'governorate',
-                        'by',
-                        'individuals',
-                        'total_tents',
-                        'min_sample_tents',
-                        'actual_tents_sampled',
-                        'free_of_open_defecation',
-                        'clean_environment',
-                        'no_solid_waste',
-                        'safe_water',
-                        'hands_washed',
-                        'clean_latrines',
-                        'locked_latrines',
-                        'lighted_latrines',
-                        'disease_prevention',
-                        'total_score',
-                        'diseases',
-                        #'raw_data',
-                        #rules.HTML('<hr>')
-                    ),
-                    'form_widget_args': {
-                        'total_score': {
-                            'style': 'color: red'
-                        }
-                    }
-                }
-            }
-        }
-    }
+    # form_subdocuments = {
+    #     'visits': {
+    #         'form_subdocuments': {
+    #             None: {
+    #                 # Add <hr> at the end of the form
+    #                 'form_columns': (
+    #                     'date',
+    #                     'visit',
+    #                     'partner',
+    #                     'governorate',
+    #                     'by',
+    #                     'individuals',
+    #                     'total_tents',
+    #                     'min_sample_tents',
+    #                     'actual_tents_sampled',
+    #                     'free_of_open_defecation',
+    #                     'clean_environment',
+    #                     'no_solid_waste',
+    #                     'safe_water',
+    #                     'hands_washed',
+    #                     'clean_latrines',
+    #                     'locked_latrines',
+    #                     'lighted_latrines',
+    #                     'disease_prevention',
+    #                     'total_score',
+    #                     'diseases',
+    #                     #'raw_data',
+    #                     #rules.HTML('<hr>')
+    #                 ),
+    #                 'form_widget_args': {
+    #                     'total_score': {
+    #                         'style': 'color: red'
+    #                     }
+    #                 }
+    #             }
+    #         }
+    #     }
+    # }
 
 
 # Create admin
 admin = admin.Admin(app, 'UniSupply dashboard')
 
 # Add views
-admin.add_view(SiteView(Sites))
+admin.add_view(SubmissionView(Submissions))
 
 
 # Flask views

@@ -23,7 +23,6 @@ Run on another terminal:
 export FLASK_APP=tasks.py
 python -m flask run
 flask import_form_data 108163 unicef_leb PRIME2017
-flask convert_to_integer
 flask run_aggregation
 
 https://docs.mongodb.com/manual/reference/operator/aggregation/add/

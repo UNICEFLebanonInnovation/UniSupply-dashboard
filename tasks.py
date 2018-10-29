@@ -21,7 +21,7 @@ def import_form_data(
         url='http://unisyncgtwy.westeurope.cloudapp.azure.com:4984/leb-winter-prd',
         username='',
         password='',
-        collection='winter_submissions'
+        collection='submissions'
 ):
     """Initialize the database."""
     click.echo('Staring import from Kobo...')
@@ -34,12 +34,15 @@ def import_form_data(
         auth=HTTPBasicAuth(username, password)
     ).json()
 
-    data = data['rows']
+    # data = data['rows']
 
     db.connection.get_default_database()[collection].drop()
-    db.connection.get_default_database()[collection].insert_many(data)
-    # db.connection.get_default_database()[collection].insert_one(data)
-    click.echo('{} submissions imported from Kobo'.format(len(data)))
+    # db.connection.get_default_database()[collection].insert_many(data)
+    for row in data['rows']:
+        if 'doc' in row:
+            doc = row['doc']
+            db.connection.get_default_database()[collection].insert_one(doc)
+    click.echo('{} submissions imported from Kobo'.format(len(data['rows'])))
 
 
 # @app.cli.command()
@@ -56,7 +59,7 @@ def import_form_data(
 
 @app.cli.command()
 def run_aggregation(
-        collection='winter_submissions',
+        collection='submissions',
         file_name='distributions'
 ):
     click.echo(db.connection.get_default_database().command(
