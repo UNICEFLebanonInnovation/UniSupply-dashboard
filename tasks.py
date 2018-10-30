@@ -41,7 +41,8 @@ def import_form_data(
     for row in data['rows']:
         if 'doc' in row:
             doc = row['doc']
-            db.connection.get_default_database()[collection].insert_one(doc)
+            if doc['type'] == 'assessment':
+                db.connection.get_default_database()[collection].insert_one(doc)
     click.echo('{} submissions imported from Kobo'.format(len(data['rows'])))
 
 
